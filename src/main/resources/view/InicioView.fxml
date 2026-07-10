@@ -19,17 +19,17 @@
          </font></Button>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#abrirJuego" text="2 JUGADORES">
+            <Button mnemonicParsing="false" onAction="#dosJugadores" text="2 JUGADORES">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#abrirJuego" text="3 JUGADORES ">
+            <Button mnemonicParsing="false" onAction="#tresJugadores" text="3 JUGADORES ">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#abrirJuego" text="4 JUGADORES ">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cuatroJugadores" text="4 JUGADORES ">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>

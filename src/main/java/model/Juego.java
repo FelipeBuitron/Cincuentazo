@@ -1,5 +1,5 @@
-import model.Carta;
-import model.Mazo;
+package model;
+
 import model.jugadores.Jugador;
 import java.util.ArrayList;
 
@@ -60,5 +60,8 @@ public class Juego {
             System.out.println();
         }
 
+    }
+    public Jugador getJugadorHumano() {
+        return jugadores.get(0);
     }
 }
