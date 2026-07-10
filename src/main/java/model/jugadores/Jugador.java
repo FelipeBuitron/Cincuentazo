@@ -37,5 +37,7 @@ public class Jugador {
     public int cantidadCartas() {
         return mano.size();
     }
+    public Carta quitarCarta(int indice) {
+        return mano.remove(indice);
+    }
 }
-//Metodos recibirCarta() jugarCarta() puedeJugar();
