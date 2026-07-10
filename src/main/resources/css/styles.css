@@ -10,3 +10,18 @@
     -fx-background-size: 900 600;
     -fx-background-position: center center;
 }
+@font-face {
+    font-family: "Broadway";
+    src: url("../fonts/BROADW.TTF");
+}
+.tituloJuego {
+    -fx-font-family: "Broadway";
+    -fx-font-size: 96px;
+    -fx-text-fill: white;
+}
+
+.tituloJuegoDos {
+    -fx-font-family: "Broadway";
+    -fx-font-size: 52px;
+    -fx-text-fill: white;
+}

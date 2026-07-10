@@ -8,10 +8,7 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" styleClass="fondo" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InstruccionesController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="58.0" prefWidth="600.0" text="50zo" textFill="WHITE">
-         <font>
-            <Font name="Broadway" size="52.0" />
-         </font>
+      <Label alignment="CENTER" styleClass="tituloJuegoDos" contentDisplay="CENTER" prefHeight="58.0" prefWidth="600.0" text="50zo" textFill="WHITE">
       </Label>
       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="614.0" text="INSTRUCCIONES " textFill="WHITE">
          <font>

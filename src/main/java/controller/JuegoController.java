@@ -27,6 +27,18 @@ public class JuegoController {
     @FXML private ImageView cartaMesa;
     @FXML private ImageView mazoImagen;
     @FXML private Label lblSuma;
+    @FXML private ImageView cartaMaquina1_1;
+    @FXML private ImageView cartaMaquina1_2;
+    @FXML private ImageView cartaMaquina1_3;
+    @FXML private ImageView cartaMaquina1_4;
+    @FXML private ImageView cartaMaquina2_1;
+    @FXML private ImageView cartaMaquina2_2;
+    @FXML private ImageView cartaMaquina2_3;
+    @FXML private ImageView cartaMaquina2_4;
+    @FXML private ImageView cartaMaquina3_1;
+    @FXML private ImageView cartaMaquina3_2;
+    @FXML private ImageView cartaMaquina3_3;
+    @FXML private ImageView cartaMaquina3_4;
     @FXML
     private void jugarCarta1(MouseEvent event) {
         jugarCarta(0);
@@ -77,6 +89,7 @@ public class JuegoController {
         this.juego = juego;
 
         mostrarCartasJugador();
+        mostrarCartasMaquina();
         mostrarMesa();
         mostrarMazo();
 
@@ -117,6 +130,29 @@ public class JuegoController {
 
         mostrarCartasJugador();
 
+    }
+    private void mostrarCartasMaquina() {
+
+        Image reverso = new Image(getClass().getResourceAsStream("/cards/back.png"));
+
+        ImageView[] cartas = {
+                cartaMaquina1_1,
+                cartaMaquina1_2,
+                cartaMaquina1_3,
+                cartaMaquina1_4,
+                cartaMaquina2_1,
+                cartaMaquina2_2,
+                cartaMaquina2_3,
+                cartaMaquina2_4,
+                cartaMaquina3_1,
+                cartaMaquina3_2,
+                cartaMaquina3_3,
+                cartaMaquina3_4
+        };
+
+        for (ImageView carta : cartas) {
+            carta.setImage(reverso);
+        }
     }
 
 }

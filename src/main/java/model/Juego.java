@@ -58,17 +58,29 @@ public class Juego {
         switch (carta.getValor()) {
 
             case "A":
-                return 1;
+                return (sumaMesa <= 40) ? 10 : 1;
+
+            case "9":
+                return 0;
 
             case "J":
             case "Q":
             case "K":
-                return 10;
+                return -10;
 
             default:
                 return Integer.parseInt(carta.getValor());
         }
     }
+
+    public boolean puedeJugar(Carta carta) {
+
+        int nuevoValor = sumaMesa + obtenerValorCarta(carta);
+
+        return nuevoValor <= 50;
+
+    }
+
     public Mesa getMesa() {
         return mesa;
     }
@@ -103,12 +115,24 @@ public class Juego {
 
         Jugador jugador = getJugadorHumano();
 
-        Carta carta = jugador.quitarCarta(indice);
+        // Mirar la carta sin quitarla
+        Carta carta = jugador.getMano().get(indice);
 
+        // Verificar si la carta puede jugarse
+        if (!puedeJugar(carta)) {
+            return null;
+        }
+
+        // Ahora sí quitarla de la mano
+        carta = jugador.quitarCarta(indice);
+
+        // Colocarla en la mesa
         mesa.agregarCarta(carta);
 
+        // Actualizar la suma
         sumaMesa += obtenerValorCarta(carta);
 
+        // Robar una nueva carta
         Carta nuevaCarta = mazo.tomarCarta();
 
         if (nuevaCarta != null) {
