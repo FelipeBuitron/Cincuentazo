@@ -7,15 +7,14 @@ public class Juego {
 
     private Mazo mazo;
     private ArrayList<Jugador> jugadores;
-    private ArrayList<Carta> mesa;
+    private Mesa mesa;
     private int sumaMesa;
     private int turnoActual;
 
     public Juego() {
         mazo = new Mazo();
         jugadores = new ArrayList<>();
-        mesa = new ArrayList<>();
-
+        mesa = new Mesa();
         sumaMesa = 0;
         turnoActual = 0;
     }
@@ -31,6 +30,7 @@ public class Juego {
             jugadores.add(new Jugador("Máquina " + i));
         }
         repartirCartas();
+        iniciarMesa();
     }
 
     private void repartirCartas() {
@@ -41,6 +41,52 @@ public class Juego {
                 jugador.agregarCarta(mazo.tomarCarta());
             }
         }
+    }
+    private void iniciarMesa() {
+
+        Carta cartaInicial = mazo.tomarCarta();
+
+        cartaInicial.setBocaArriba(true);
+
+        mesa.agregarCarta(cartaInicial);
+
+        sumaMesa = obtenerValorCarta(cartaInicial);
+
+    }
+    private int obtenerValorCarta(Carta carta) {
+
+        switch (carta.getValor()) {
+
+            case "A":
+                return (sumaMesa <= 40) ? 10 : 1;
+
+            case "9":
+                return 0;
+
+            case "J":
+            case "Q":
+            case "K":
+                return -10;
+
+            default:
+                return Integer.parseInt(carta.getValor());
+        }
+    }
+
+    public boolean puedeJugar(Carta carta) {
+
+        int nuevoValor = sumaMesa + obtenerValorCarta(carta);
+
+        return nuevoValor <= 50;
+
+    }
+
+    public Mesa getMesa() {
+        return mesa;
+    }
+
+    public int getSumaMesa() {
+        return sumaMesa;
     }
 
     public ArrayList<Jugador> getJugadores() {
@@ -63,5 +109,36 @@ public class Juego {
     }
     public Jugador getJugadorHumano() {
         return jugadores.get(0);
+    }
+
+    public Carta jugarCartaJugador(int indice) {
+
+        Jugador jugador = getJugadorHumano();
+
+        // Mirar la carta sin quitarla
+        Carta carta = jugador.getMano().get(indice);
+
+        // Verificar si la carta puede jugarse
+        if (!puedeJugar(carta)) {
+            return null;
+        }
+
+        // Ahora sí quitarla de la mano
+        carta = jugador.quitarCarta(indice);
+
+        // Colocarla en la mesa
+        mesa.agregarCarta(carta);
+
+        // Actualizar la suma
+        sumaMesa += obtenerValorCarta(carta);
+
+        // Robar una nueva carta
+        Carta nuevaCarta = mazo.tomarCarta();
+
+        if (nuevaCarta != null) {
+            jugador.agregarCarta(nuevaCarta);
+        }
+
+        return carta;
     }
 }
