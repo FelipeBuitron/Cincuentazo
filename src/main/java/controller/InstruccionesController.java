@@ -10,9 +10,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class JuegoController {
+public class InstruccionesController {
+
     @FXML
-    private void menuPrincipal(ActionEvent event) throws IOException {
+    private void atras(ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getResource("/view/InicioView.fxml"));
 
@@ -24,3 +25,4 @@ public class JuegoController {
         stage.show();
     }
 }
+
