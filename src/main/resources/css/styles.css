@@ -1,0 +1,12 @@
+.fondo {
+    -fx-background-image: url("/img/fondo.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+.fondoDos {
+    -fx-background-image: url("/img/fondo.jfif");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 900 600;
+    -fx-background-position: center center;
+}
