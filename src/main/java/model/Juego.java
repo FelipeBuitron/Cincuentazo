@@ -23,10 +23,8 @@ public class Juego {
         jugadores.clear();
         turnoActual = 0;
 
-        // Crear jugador humano
         jugadores.add(new Jugador("Jugador"));
 
-        // Crear jugadores máquina
         for (int i = 1; i <= cantidadMaquinas; i++) {
             jugadores.add(new Jugador("Máquina " + i));
         }
@@ -50,7 +48,7 @@ public class Juego {
     }
 
     private int obtenerValorCarta(Carta carta) {
-        switch (carta.getValor()) {
+        switch (carta.getValor()) {dir
             case "A":
                 return (sumaMesa <= 40) ? 10 : 1;
             case "9":
@@ -98,24 +96,18 @@ public class Juego {
     public Carta jugarCartaJugador(int indice) {
         Jugador jugador = getJugadorHumano();
 
-        // Mirar la carta sin quitarla
         Carta carta = jugador.getMano().get(indice);
 
-        // Verificar si la carta puede jugarse
         if (!puedeJugar(carta)) {
             return null;
         }
 
-        // Ahora sí quitarla de la mano
         carta = jugador.quitarCarta(indice);
 
-        // Colocarla en la mesa
         mesa.agregarCarta(carta);
 
-        // Actualizar la suma
         sumaMesa += obtenerValorCarta(carta);
 
-        // Robar una nueva carta
         Carta nuevaCarta = mazo.tomarCarta();
         if (nuevaCarta != null) {
             jugador.agregarCarta(nuevaCarta);
@@ -123,10 +115,6 @@ public class Juego {
 
         return carta;
     }
-
-    // =================================================================
-    // NUEVOS MÉTODOS PARA CONTROL DE TURNOS Y ELIMINACIÓN
-    // =================================================================
 
     public int getTurnoActual() {
         return turnoActual;
