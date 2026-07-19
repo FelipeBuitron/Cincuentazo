@@ -1,7 +1,22 @@
 package model;
 
+/**
+ * Contiene toda la lógica del juego Cincuentazo.
+ *
+ * Administra el mazo, la mesa, los jugadores,
+ * los turnos y las reglas de la partida.
+ *
+ * @author Andrés Felipe Escobar
+ * @author Carlos Delgado
+ * @version 1.0
+ */
+
 import model.jugadores.Jugador;
+import model.jugadores.JugadorHumano;
+import model.jugadores.JugadorMaquina;
 import java.util.ArrayList;
+import model.excepciones.CartaInvalidaExcepcion;
+import model.excepciones.SinCartasExcepcion;
 
 public class Juego {
 
@@ -22,11 +37,9 @@ public class Juego {
     public void iniciarJuego(int cantidadMaquinas) {
         jugadores.clear();
         turnoActual = 0;
-
-        jugadores.add(new Jugador("Jugador"));
-
+        jugadores.add(new JugadorHumano("Jugador"));
         for (int i = 1; i <= cantidadMaquinas; i++) {
-            jugadores.add(new Jugador("Máquina " + i));
+            jugadores.add(new JugadorMaquina("Máquina " + i));
         }
         repartirCartas();
         iniciarMesa();
@@ -47,77 +60,56 @@ public class Juego {
         sumaMesa = obtenerValorCarta(cartaInicial);
     }
 
+    private void reciclarMazo() {
+
+        if (mazo.cantidadCartas() == 0) {
+
+            for (Carta carta : mesa.retirarCartasParaReciclar()) {
+                mazo.agregarCarta(carta);
+            }
+
+            mazo.barajarMazo();
+        }
+    }
+
     private int obtenerValorCarta(Carta carta) {
-        switch (carta.getValor()) {dir
-            case "A":
-                return (sumaMesa <= 40) ? 10 : 1;
-            case "9":
-                return 0;
-            case "J":
-            case "Q":
-            case "K":
-                return -10;
-            default:
-                return Integer.parseInt(carta.getValor());
+        switch (carta.getValor()) {
+            case "A": return (sumaMesa <= 40) ? 10 : 1;
+            case "9": return 0;
+            case "J": case "Q": case "K": return -10;
+            default: return Integer.parseInt(carta.getValor());
         }
     }
 
     public boolean puedeJugar(Carta carta) {
-        int nuevoValor = sumaMesa + obtenerValorCarta(carta);
-        return nuevoValor <= 50;
-    }
 
-    public Mesa getMesa() {
-        return mesa;
-    }
-
-    public int getSumaMesa() {
-        return sumaMesa;
-    }
-
-    public ArrayList<Jugador> getJugadores() {
-        return jugadores;
-    }
-
-    public void mostrarManos() {
-        for (Jugador jugador : jugadores) {
-            System.out.println("==== " + jugador.getNombre() + " ====");
-            for (Carta carta : jugador.getMano()) {
-                System.out.println(carta.getValor() + carta.getPalo());
-            }
-            System.out.println();
+        if (carta == null) {
+            return false;
         }
+
+        return (sumaMesa + obtenerValorCarta(carta)) <= 50;
     }
 
-    public Jugador getJugadorHumano() {
-        return jugadores.get(0);
-    }
+    public Mesa getMesa() { return mesa; }
+    public int getSumaMesa() { return sumaMesa; }
+    public ArrayList<Jugador> getJugadores() { return jugadores; }
+    public Jugador getJugadorHumano() { return jugadores.get(0); }
+    public int getTurnoActual() { return turnoActual; }
 
     public Carta jugarCartaJugador(int indice) {
         Jugador jugador = getJugadorHumano();
-
+        if (indice < 0 || indice >= jugador.getMano().size()) return null;
         Carta carta = jugador.getMano().get(indice);
-
-        if (!puedeJugar(carta)) {
-            return null;
-        }
-
+        if (!puedeJugar(carta)) return null;
         carta = jugador.quitarCarta(indice);
-
         mesa.agregarCarta(carta);
-
         sumaMesa += obtenerValorCarta(carta);
-
+        reciclarMazo();
         Carta nuevaCarta = mazo.tomarCarta();
         if (nuevaCarta != null) {
             jugador.agregarCarta(nuevaCarta);
         }
-
         return carta;
-    }
-
-    public int getTurnoActual() {
-        return turnoActual;
     }
 
     public void siguienteTurno() {
@@ -125,27 +117,36 @@ public class Juego {
     }
 
     public void eliminarJugadorActual() {
-        Jugador eliminado = jugadores.remove(turnoActual);
-        eliminado.setEliminado(true);
-        for (Carta c : eliminado.getMano()) {
-            mazo.agregarCartaAlFinal(c);
+
+        Jugador eliminado = jugadores.get(turnoActual);
+
+        // Devolver las cartas al mazo
+        for (Carta carta : eliminado.getMano()) {
+            mazo.agregarCarta(carta);
         }
+
+        // Barajar nuevamente
+        mazo.barajarMazo();
+
+        // Vaciar la mano del jugador eliminado
+        eliminado.vaciarMano();
+
+        eliminado.setEliminado(true);
+
+        jugadores.remove(turnoActual);
+
         if (turnoActual >= jugadores.size()) {
             turnoActual = 0;
         }
     }
 
-    public boolean esFinDeJuego() {
-        return jugadores.size() == 1;
-    }
-
-    public Jugador getGanador() {
-        return jugadores.get(0);
-    }
+    public boolean esFinDeJuego() { return jugadores.size() == 1; }
+    public Jugador getGanador() { return jugadores.get(0); }
 
     public void registrarJugadaEnMesa(Carta carta, Jugador j) {
         mesa.agregarCarta(carta);
         sumaMesa += obtenerValorCarta(carta);
+        reciclarMazo();
         Carta n = mazo.tomarCarta();
         if (n != null) {
             j.agregarCarta(n);
